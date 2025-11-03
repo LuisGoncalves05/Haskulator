@@ -26,7 +26,7 @@ data Expr = Num Integer
           | Mul Expr Expr
           | Sub Expr Expr
           | Div Expr Expr
-          | Rem Expr Expr
+          | Mod Expr Expr
           deriving Show
 
 type Name = String
@@ -43,7 +43,7 @@ eval e (Add e1 e2) = eval e e1 + eval e e2
 eval e (Mul e1 e2) = eval e e1 * eval e e2
 eval e (Sub e1 e2) = eval e e1 - eval e e2
 eval e (Div e1 e2) = eval e e1 `div` eval e e2
-eval e (Rem e1 e2) = eval e e1 `rem` eval e e2
+eval e (Mod e1 e2) = eval e e1 `mod` eval e e2
 
 -- | a parser for expressions
 -- Grammar rules:
@@ -82,7 +82,7 @@ termCont acc =  do char '*'
                         termCont (Div acc f)
                  <|> do char '%'
                         f <- factor
-                        termCont (Rem acc f)
+                        termCont (Mod acc f)
                  <|> return acc
 
 factor :: Parser Expr
